@@ -393,7 +393,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏆 College Tournament</h1>
+            <h1>🏆 University Tournament</h1>
             <p>Discover your dream school through elimination!</p>
         </div>
 
@@ -438,7 +438,7 @@
         </div>
 
         <div class="footer">
-            <button class="update-btn" id="updateData">⚙️ Update University Data</button>
+            <button class="update-btn" id="updateData">⚙️ Update College Data</button>
         </div>
 
         <!-- Modal for updating data -->
@@ -459,7 +459,7 @@
         class CareerTournament {
             constructor() {
                 this.careers = [
-                    "Harvard University","Stanford University","Massachusetts Institute of Technology",
+                              "Harvard University","Stanford University","Massachusetts Institute of Technology",
           "Yale University","Princeton University","Columbia University","University of Chicago",
           "University of Pennsylvania","California Institute of Technology","Duke University",
           "Johns Hopkins University","Northwestern University","Dartmouth College",
@@ -518,42 +518,27 @@
                     this.startTournament();
                 });
 
-                // Career selection with multiple event types for Safari compatibility
-                const career1 = document.getElementById('career1');
-                const career2 = document.getElementById('career2');
-                
-                // Remove any existing listeners first
-                career1.onclick = null;
-                career2.onclick = null;
-                
-                // Add multiple event types for maximum Safari compatibility
-                const selectCareer1 = (e) => {
+                // Career selection
+                document.getElementById('career1').addEventListener('click', (e) => {
                     e.preventDefault();
-                    e.stopPropagation();
                     this.selectCareer(0);
-                };
-                
-                const selectCareer2 = (e) => {
+                });
+
+                document.getElementById('career2').addEventListener('click', (e) => {
                     e.preventDefault();
-                    e.stopPropagation();
                     this.selectCareer(1);
-                };
-                
-                // Mouse events
-                career1.addEventListener('click', selectCareer1, true);
-                career2.addEventListener('click', selectCareer2, true);
-                
-                // Touch events for mobile Safari
-                career1.addEventListener('touchstart', selectCareer1, { passive: false });
-                career2.addEventListener('touchstart', selectCareer2, { passive: false });
-                
-                // Pointer events (modern Safari)
-                career1.addEventListener('pointerdown', selectCareer1, true);
-                career2.addEventListener('pointerdown', selectCareer2, true);
-                
-                // Direct onclick as fallback
-                career1.onclick = selectCareer1;
-                career2.onclick = selectCareer2;
+                });
+
+                // Also add touch events for better mobile support
+                document.getElementById('career1').addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    this.selectCareer(0);
+                });
+
+                document.getElementById('career2').addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    this.selectCareer(1);
+                });
 
                 // Action buttons
                 document.getElementById('saveResults').addEventListener('click', () => {
@@ -672,7 +657,7 @@
                 document.getElementById('resultsScreen').classList.add('fade-in');
                 
                 document.getElementById('winnerAnnouncement').textContent = 
-                    `🎉 Your ideal university is: ${winner}! 🎉`;
+                    `🎉 Your ideal career is: ${winner}! 🎉`;
                 
                 const pathContainer = document.getElementById('careerPath');
                 pathContainer.innerHTML = '';
