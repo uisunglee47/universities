@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Tournament</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: white;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            position: relative;
+        }
+
+        .content {
+            padding: 30px 20px;
+        }
+
+        .round-selector {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .round-selector h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1.4em;
+        }
+
+        .round-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .round-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .round-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .round-btn.selected {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .start-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            color: white;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+        }
+
+        .tournament-container {
+            display: none;
+            text-align: center;
+        }
+
+        .round-info {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .battle-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            height: 200px;
+        }
+
+        .career-card {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .career-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .career-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+            border-color: #3498db;
+        }
+
+        .career-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .career-name {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #2c3e50;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .results-container {
+            display: none;
+            text-align: center;
+        }
+
+        .winner-announcement {
+            background: linear-gradient(45deg, #f1c40f, #f39c12);
+            color: #2c3e50;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            font-size: 1.4em;
+            font-weight: 700;
+            box-shadow: 0 8px 25px rgba(241, 196, 15, 0.3);
+        }
+
+        .final-results {
+            background: #ecf0f1;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .final-results h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .career-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .career-item {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .save-btn {
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            color: white;
+        }
+
+        .restart-btn {
+            background: linear-gradient(45deg, #34495e, #2c3e50);
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #34495e;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .update-btn {
+            background: none;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .update-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.6);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .modal textarea {
+            width: 100%;
+            height: 120px;
+            border: 2px solid #bdc3c7;
+            border-radius: 10px;
+            padding: 10px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .confirm-btn {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .cancel-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+                margin: 0;
+            }
+            
+            .battle-container {
+                flex-direction: column;
+                height: auto;
+                gap: 20px;
+            }
+            
+            .career-card {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏆 College Tournament</h1>
+            <p>Discover your dream school through elimination!</p>
+        </div>
+
+        <div class="content">
+            <!-- Initial Setup Screen -->
+            <div id="setupScreen" class="round-selector">
+                <h2>Choose Your Tournament Size</h2>
+                <div class="round-buttons">
+                    <button class="round-btn" data-rounds="8">8 Colleges</button>
+                    <button class="round-btn" data-rounds="16">16 Colleges</button>
+                    <button class="round-btn" data-rounds="32">32 Colleges</button>
+                    <button class="round-btn" data-rounds="64">64 Colleges</button>
+                </div>
+                <button class="start-btn" id="startTournament" disabled>Start Tournament</button>
+            </div>
+
+            <!-- Tournament Screen -->
+            <div id="tournamentScreen" class="tournament-container">
+                <div class="round-info" id="roundInfo"></div>
+                <div class="battle-container" id="battleContainer">
+                    <div class="career-card" id="career1">
+                        <div class="career-name" id="careerName1"></div>
+                    </div>
+                    <div class="career-card" id="career2">
+                        <div class="career-name" id="careerName2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="resultsScreen" class="results-container">
+                <div class="winner-announcement" id="winnerAnnouncement"></div>
+                <div class="final-results">
+                    <h3>Tournament Results by Round:</h3>
+                    <div class="career-list" id="careerPath"></div>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn save-btn" id="saveResults">💾 Save Results</button>
+                    <button class="action-btn restart-btn" id="restartTournament">🔄 Play Again</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <button class="update-btn" id="updateData">⚙️ Update University Data</button>
+        </div>
+
+        <!-- Modal for updating data -->
+        <div id="updateModal" class="modal">
+            <div class="modal-content">
+                <h3>Update Career Database</h3>
+                <p>Add careers (one per line):</p>
+                <textarea id="careerInput" placeholder="Software Engineer&#10;Doctor&#10;Teacher&#10;..."></textarea>
+                <div class="modal-buttons">
+                    <button class="modal-btn confirm-btn" id="confirmUpdate">Update</button>
+                    <button class="modal-btn cancel-btn" id="cancelUpdate">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class CareerTournament {
+            constructor() {
+                this.careers = [
+                    "Harvard University","Stanford University","Massachusetts Institute of Technology",
+          "Yale University","Princeton University","Columbia University","University of Chicago",
+          "University of Pennsylvania","California Institute of Technology","Duke University",
+          "Johns Hopkins University","Northwestern University","Dartmouth College",
+          "Brown University","Cornell University","University of Notre Dame",
+          "Vanderbilt University","Rice University","Washington University in St. Louis",
+          "Georgetown University","University of California, Berkeley","University of California, Los Angeles",
+          "University of Michigan, Ann Arbor","University of Southern California","Carnegie Mellon University",
+          "Emory University","New York University","University of Virginia","University of North Carolina at Chapel Hill",
+          "Wake Forest University","Boston College","Tufts University","University of Rochester",
+          "University of California, San Diego","University of California, Santa Barbara","University of California, Irvine",
+          "University of Florida","University of Wisconsin-Madison","University of Illinois Urbana-Champaign",
+          "Pennsylvania State University","University of Texas at Austin","Ohio State University",
+          "University of Miami","University of Washington","Purdue University","Boston University",
+          "University of Maryland, College Park","University of Minnesota Twin Cities","Michigan State University",
+          "Texas A&M University","University of Pittsburgh","Case Western Reserve University",
+          "University of Georgia","Indiana University Bloomington","Northeastern University",
+          "University of Connecticut","University of Delaware","University of California, Davis",
+          "University of Colorado Boulder","University of Iowa","University of Arizona",
+          "University of Tennessee","University of Massachusetts Amherst","University of Houston",
+          "University of Kansas","University of Missouri","University of Nebraska-Lincoln",
+          "University of Oklahoma","University of Oregon","University of Alabama",
+          "University of Kentucky","University of South Carolina","University of Utah",
+          "University of Arkansas","University of Cincinnati","University of Mississippi",
+          "University of New Mexico","University of Vermont","University of Hawaii at Manoa",
+          "University of Central Florida","University of California, Riverside","University at Buffalo (SUNY)",
+          "Stony Brook University (SUNY)","Baylor University","Southern Methodist University",
+          "Texas Christian University","Florida State University","Clemson University","Colorado State University",
+          "University of Illinois Chicago","Rutgers University-New Brunswick","Temple University",
+          "University of Denver","George Washington University","Fordham University",
+          "Pepperdine University","American University","Syracuse University","Lehigh University"
+                ];
+                
+                this.selectedRounds = 0;
+                this.currentTournament = [];
+                this.currentRound = 1;
+                this.currentMatch = 0;
+                this.winners = [];
+                this.careerPath = [];
+                
+                this.initializeEvents();
+            }
+
+            initializeEvents() {
+                // Round selection
+                document.querySelectorAll('.round-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.round-btn').forEach(b => b.classList.remove('selected'));
+                        e.target.classList.add('selected');
+                        this.selectedRounds = parseInt(e.target.dataset.rounds);
+                        document.getElementById('startTournament').disabled = false;
+                    });
+                });
+
+                // Start tournament
+                document.getElementById('startTournament').addEventListener('click', () => {
+                    this.startTournament();
+                });
+
+                // Career selection with multiple event types for Safari compatibility
+                const career1 = document.getElementById('career1');
+                const career2 = document.getElementById('career2');
+                
+                // Remove any existing listeners first
+                career1.onclick = null;
+                career2.onclick = null;
+                
+                // Add multiple event types for maximum Safari compatibility
+                const selectCareer1 = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.selectCareer(0);
+                };
+                
+                const selectCareer2 = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.selectCareer(1);
+                };
+                
+                // Mouse events
+                career1.addEventListener('click', selectCareer1, true);
+                career2.addEventListener('click', selectCareer2, true);
+                
+                // Touch events for mobile Safari
+                career1.addEventListener('touchstart', selectCareer1, { passive: false });
+                career2.addEventListener('touchstart', selectCareer2, { passive: false });
+                
+                // Pointer events (modern Safari)
+                career1.addEventListener('pointerdown', selectCareer1, true);
+                career2.addEventListener('pointerdown', selectCareer2, true);
+                
+                // Direct onclick as fallback
+                career1.onclick = selectCareer1;
+                career2.onclick = selectCareer2;
+
+                // Action buttons
+                document.getElementById('saveResults').addEventListener('click', () => {
+                    this.saveResults();
+                });
+
+                document.getElementById('restartTournament').addEventListener('click', () => {
+                    this.restartTournament();
+                });
+
+                // Update data modal
+                document.getElementById('updateData').addEventListener('click', () => {
+                    document.getElementById('updateModal').style.display = 'block';
+                    document.getElementById('careerInput').value = this.careers.join('\n');
+                });
+
+                document.getElementById('confirmUpdate').addEventListener('click', () => {
+                    this.updateCareerData();
+                });
+
+                document.getElementById('cancelUpdate').addEventListener('click', () => {
+                    document.getElementById('updateModal').style.display = 'none';
+                });
+            }
+
+            startTournament() {
+                // Shuffle and select random careers
+                const shuffled = [...this.careers].sort(() => Math.random() - 0.5);
+                this.currentTournament = shuffled.slice(0, this.selectedRounds);
+                
+                this.currentRound = 1;
+                this.currentMatch = 0;
+                this.winners = [];
+                this.currentRoundWinners = [];
+                this.roundResults = [];
+                
+                document.getElementById('setupScreen').style.display = 'none';
+                document.getElementById('tournamentScreen').style.display = 'block';
+                document.getElementById('tournamentScreen').classList.add('fade-in');
+                
+                this.showNextMatch();
+            }
+
+            showNextMatch() {
+                const totalRounds = Math.log2(this.selectedRounds);
+                const currentRoundSize = this.selectedRounds / Math.pow(2, this.currentRound - 1);
+                const remainingMatches = currentRoundSize / 2 - this.currentMatch;
+                
+                document.getElementById('roundInfo').textContent = 
+                    `Round ${this.currentRound} of ${totalRounds} • Match ${this.currentMatch + 1} of ${currentRoundSize / 2}`;
+                
+                const competitors = this.currentRound === 1 ? this.currentTournament : this.winners;
+                const index = this.currentMatch * 2;
+                
+                document.getElementById('careerName1').textContent = competitors[index];
+                document.getElementById('careerName2').textContent = competitors[index + 1];
+            }
+
+            selectCareer(choice) {
+                const competitors = this.currentRound === 1 ? this.currentTournament : this.winners;
+                const index = this.currentMatch * 2;
+                const selectedCareer = competitors[index + choice];
+                
+                console.log(`Round ${this.currentRound}, Match ${this.currentMatch + 1}: Selected ${selectedCareer}`);
+                
+                // Add winner to current round winners array
+                if (!this.currentRoundWinners) {
+                    this.currentRoundWinners = [];
+                }
+                this.currentRoundWinners.push(selectedCareer);
+                
+                this.currentMatch++;
+                
+                const currentRoundSize = this.selectedRounds / Math.pow(2, this.currentRound - 1);
+                const matchesInRound = currentRoundSize / 2;
+                
+                console.log(`Current round size: ${currentRoundSize}, Matches in round: ${matchesInRound}, Current match: ${this.currentMatch}`);
+                
+                if (this.currentMatch >= matchesInRound) {
+                    // Round completed - save round results
+                    const totalRounds = Math.log2(this.selectedRounds);
+                    const roundName = this.currentRound === totalRounds ? 'Winner' : 
+                                     this.currentRound === totalRounds - 1 ? 'Final' :
+                                     this.currentRound === totalRounds - 2 ? 'Semifinal' :
+                                     `Round ${this.currentRound}`;
+                    
+                    this.roundResults.push({
+                        round: roundName,
+                        winners: [...this.currentRoundWinners]
+                    });
+                    
+                    console.log(`Round ${this.currentRound} completed. Winners:`, this.currentRoundWinners);
+                    
+                    if (this.currentRoundWinners.length === 1) {
+                        // Tournament finished
+                        this.showResults(selectedCareer);
+                        return;
+                    } else {
+                        // Next round
+                        this.winners = [...this.currentRoundWinners];
+                        this.currentRoundWinners = [];
+                        this.currentRound++;
+                        this.currentMatch = 0;
+                        console.log(`Starting round ${this.currentRound} with ${this.winners.length} competitors`);
+                    }
+                }
+                
+                setTimeout(() => {
+                    this.showNextMatch();
+                }, 300);
+            }
+
+            showResults(winner) {
+                document.getElementById('tournamentScreen').style.display = 'none';
+                document.getElementById('resultsScreen').style.display = 'block';
+                document.getElementById('resultsScreen').classList.add('fade-in');
+                
+                document.getElementById('winnerAnnouncement').textContent = 
+                    `🎉 Your ideal university is: ${winner}! 🎉`;
+                
+                const pathContainer = document.getElementById('careerPath');
+                pathContainer.innerHTML = '';
+                
+                // Show results by round (reverse order to show from final to first)
+                this.roundResults.reverse().forEach((round, index) => {
+                    const roundHeader = document.createElement('div');
+                    roundHeader.style.cssText = `
+                        margin-top: ${index > 0 ? '20px' : '0'};
+                        margin-bottom: 10px;
+                        font-weight: 700;
+                        color: #2c3e50;
+                        font-size: 1.1em;
+                    `;
+                    roundHeader.textContent = `${round.round}:`;
+                    pathContainer.appendChild(roundHeader);
+                    
+                    round.winners.forEach((career, careerIndex) => {
+                        const item = document.createElement('div');
+                        item.className = 'career-item';
+                        item.textContent = career;
+                        if (index === 0 && careerIndex === 0) {
+                            item.style.borderLeftColor = '#f39c12';
+                            item.style.fontWeight = '700';
+                        }
+                        pathContainer.appendChild(item);
+                    });
+                });
+            }
+
+            saveResults() {
+                const results = {
+                    winner: this.roundResults[this.roundResults.length - 1].winners[0],
+                    roundResults: this.roundResults,
+                    timestamp: new Date().toISOString(),
+                    tournamentSize: this.selectedRounds
+                };
+                
+                const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `career-tournament-${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                alert('Results saved successfully! 💾');
+            }
+
+            restartTournament() {
+                document.getElementById('resultsScreen').style.display = 'none';
+                document.getElementById('setupScreen').style.display = 'block';
+                document.getElementById('setupScreen').classList.add('fade-in');
+                
+                document.querySelectorAll('.round-btn').forEach(btn => btn.classList.remove('selected'));
+                document.getElementById('startTournament').disabled = true;
+                this.selectedRounds = 0;
+            }
+
+            updateCareerData() {
+                const newCareers = document.getElementById('careerInput').value
+                    .split('\n')
+                    .map(career => career.trim())
+                    .filter(career => career.length > 0);
+                
+                if (newCareers.length > 0) {
+                    this.careers = [...new Set(newCareers)]; // Remove duplicates
+                    alert(`Career database updated with ${this.careers.length} careers! 🎯`);
+                }
+                
+                document.getElementById('updateModal').style.display = 'none';
+            }
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            new CareerTournament();
+        });
+    </script>
+</body>
+</html>
