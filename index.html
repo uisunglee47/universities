@@ -142,20 +142,21 @@
         .battle-container {
             display: flex;
             gap: 15px;
-            margin-bottom: 30px;
-            height: 200px;
+            margin-bottom: 20px;
+            height: 160px;
         }
 
         .career-card {
             flex: 1;
             background: white;
             border-radius: 20px;
-            padding: 20px;
+            padding: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 8px 25px rgba(0,0,0,0.1);
             border: 3px solid transparent;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
@@ -189,12 +190,118 @@
         }
 
         .career-name {
-            font-size: 1.3em;
+            font-size: 1.1em;
             font-weight: 700;
             color: #2c3e50;
             position: relative;
             z-index: 1;
             text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .info-btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 6px 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+            position: relative;
+        }
+
+        .info-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .info-btn.active {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+        }
+
+        /* University Information Display Area */
+        .university-info-display {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #e9ecef;
+            min-height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .university-info-display.has-content {
+            color: #333;
+            font-style: normal;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+
+        .university-info-content {
+            width: 100%;
+        }
+
+        .university-info-content h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #e67e22;
+            font-size: 0.85em;
+            margin-bottom: 2px;
+        }
+
+        .info-value {
+            font-size: 0.95em;
+            color: #2c3e50;
+        }
+
+        .strengths {
+            grid-column: 1 / -1;
+            margin-top: 5px;
+            padding-top: 10px;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .website-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .website-link:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        .website-link:visited {
+            color: #8e44ad;
         }
 
         .results-container {
@@ -239,6 +346,35 @@
             border-left: 4px solid #3498db;
             font-weight: 600;
             color: #2c3e50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .career-item .university-name {
+            flex: 1;
+        }
+
+        .career-item .info-btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 4px 8px;
+            font-size: 0.7em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .career-item .info-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .career-item .info-btn.active {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
         }
 
         .action-buttons {
@@ -372,7 +508,7 @@
             animation: fadeIn 0.5s ease;
         }
 
-        @media (max-width: 480px) {
+            @media (max-width: 480px) {
             .container {
                 max-width: 100%;
                 margin: 0;
@@ -381,11 +517,31 @@
             .battle-container {
                 flex-direction: column;
                 height: auto;
-                gap: 20px;
+                gap: 15px;
             }
             
             .career-card {
-                height: 120px;
+                height: 100px;
+            }
+
+            .career-name {
+                font-size: 1em;
+                margin-bottom: 6px;
+            }
+
+            .info-btn {
+                padding: 5px 10px;
+                font-size: 0.75em;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .university-info-display {
+                padding: 15px;
+                min-height: 120px;
             }
         }
     </style>
@@ -416,16 +572,33 @@
                 <div class="battle-container" id="battleContainer">
                     <div class="career-card" id="career1">
                         <div class="career-name" id="careerName1"></div>
+                        <button class="info-btn" id="infoBtn1">ℹ️ Info</button>
                     </div>
                     <div class="career-card" id="career2">
                         <div class="career-name" id="careerName2"></div>
+                        <button class="info-btn" id="infoBtn2">ℹ️ Info</button>
                     </div>
                 </div>
+                
+                <!-- University Information Display Area -->
+                <div id="universityInfoDisplay" class="university-info-display">
+                    Click the "ℹ️ Info" button on any university to see detailed information
+                </div>
+                
+                <p style="font-style: italic; color: #666; font-size: 0.9em; margin-top: 10px; text-align: center;">
+                    💡 View university details above, then click your preferred choice
+                </p>
             </div>
 
             <!-- Results Screen -->
             <div id="resultsScreen" class="results-container">
                 <div class="winner-announcement" id="winnerAnnouncement"></div>
+                
+                <!-- University Information Display Area for Results -->
+                <div id="resultsInfoDisplay" class="university-info-display">
+                    Click any "ℹ️ Info" button below to see university details
+                </div>
+                
                 <div class="final-results">
                     <h3>Tournament Results by Round:</h3>
                     <div class="career-list" id="careerPath"></div>
@@ -441,12 +614,15 @@
             <button class="update-btn" id="updateData">⚙️ Update College Data</button>
         </div>
 
+        <!-- University Info Tooltip -->
+        <div id="universityTooltip" class="university-info"></div>
+
         <!-- Modal for updating data -->
         <div id="updateModal" class="modal">
             <div class="modal-content">
-                <h3>Update Career Database</h3>
-                <p>Add careers (one per line):</p>
-                <textarea id="careerInput" placeholder="Software Engineer&#10;Doctor&#10;Teacher&#10;..."></textarea>
+                <h3>Update University Database</h3>
+                <p>Add universities (one per line):</p>
+                <textarea id="careerInput" placeholder="Harvard University&#10;Stanford University&#10;MIT&#10;..."></textarea>
                 <div class="modal-buttons">
                     <button class="modal-btn confirm-btn" id="confirmUpdate">Update</button>
                     <button class="modal-btn cancel-btn" id="cancelUpdate">Cancel</button>
@@ -456,48 +632,662 @@
     </div>
 
     <script>
-        class CareerTournament {
+        class UniversityTournament {
             constructor() {
-                this.careers = [
-                              "Harvard University","Stanford University","Massachusetts Institute of Technology",
-          "Yale University","Princeton University","Columbia University","University of Chicago",
-          "University of Pennsylvania","California Institute of Technology","Duke University",
-          "Johns Hopkins University","Northwestern University","Dartmouth College",
-          "Brown University","Cornell University","University of Notre Dame",
-          "Vanderbilt University","Rice University","Washington University in St. Louis",
-          "Georgetown University","University of California, Berkeley","University of California, Los Angeles",
-          "University of Michigan, Ann Arbor","University of Southern California","Carnegie Mellon University",
-          "Emory University","New York University","University of Virginia","University of North Carolina at Chapel Hill",
-          "Wake Forest University","Boston College","Tufts University","University of Rochester",
-          "University of California, San Diego","University of California, Santa Barbara","University of California, Irvine",
-          "University of Florida","University of Wisconsin-Madison","University of Illinois Urbana-Champaign",
-          "Pennsylvania State University","University of Texas at Austin","Ohio State University",
-          "University of Miami","University of Washington","Purdue University","Boston University",
-          "University of Maryland, College Park","University of Minnesota Twin Cities","Michigan State University",
-          "Texas A&M University","University of Pittsburgh","Case Western Reserve University",
-          "University of Georgia","Indiana University Bloomington","Northeastern University",
-          "University of Connecticut","University of Delaware","University of California, Davis",
-          "University of Colorado Boulder","University of Iowa","University of Arizona",
-          "University of Tennessee","University of Massachusetts Amherst","University of Houston",
-          "University of Kansas","University of Missouri","University of Nebraska-Lincoln",
-          "University of Oklahoma","University of Oregon","University of Alabama",
-          "University of Kentucky","University of South Carolina","University of Utah",
-          "University of Arkansas","University of Cincinnati","University of Mississippi",
-          "University of New Mexico","University of Vermont","University of Hawaii at Manoa",
-          "University of Central Florida","University of California, Riverside","University at Buffalo (SUNY)",
-          "Stony Brook University (SUNY)","Baylor University","Southern Methodist University",
-          "Texas Christian University","Florida State University","Clemson University","Colorado State University",
-          "University of Illinois Chicago","Rutgers University-New Brunswick","Temple University",
-          "University of Denver","George Washington University","Fordham University",
-          "Pepperdine University","American University","Syracuse University","Lehigh University"
+                this.universities = [
+                    "Harvard University","Stanford University","Massachusetts Institute of Technology",
+                    "Yale University","Princeton University","Columbia University","University of Chicago",
+                    "University of Pennsylvania","California Institute of Technology","Duke University",
+                    "Johns Hopkins University","Northwestern University","Dartmouth College",
+                    "Brown University","Cornell University","University of Notre Dame",
+                    "Vanderbilt University","Rice University","Washington University in St. Louis",
+                    "Georgetown University","University of California, Berkeley","University of California, Los Angeles",
+                    "University of Michigan, Ann Arbor","University of Southern California","Carnegie Mellon University",
+                    "Emory University","New York University","University of Virginia","University of North Carolina at Chapel Hill",
+                    "Wake Forest University","Boston College","Tufts University","University of Rochester",
+                    "University of California, San Diego","University of California, Santa Barbara","University of California, Irvine",
+                    "University of Florida","University of Wisconsin-Madison","University of Illinois Urbana-Champaign",
+                    "Pennsylvania State University","University of Texas at Austin","Ohio State University",
+                    "University of Miami","University of Washington","Purdue University","Boston University",
+                    "University of Maryland, College Park","University of Minnesota Twin Cities","Michigan State University",
+                    "Texas A&M University","University of Pittsburgh","Case Western Reserve University",
+                    "University of Georgia","Indiana University Bloomington","Northeastern University",
+                    "University of Connecticut","University of Delaware","University of California, Davis",
+                    "University of Colorado Boulder","University of Iowa","University of Arizona",
+                    "University of Tennessee","University of Massachusetts Amherst","University of Houston",
+                    "University of Kansas","University of Missouri","University of Nebraska-Lincoln",
+                    "University of Oklahoma","University of Oregon","University of Alabama",
+                    "University of Kentucky","University of South Carolina","University of Utah",
+                    "University of Arkansas","University of Cincinnati","University of Mississippi",
+                    "University of New Mexico","University of Vermont","University of Hawaii at Manoa",
+                    "University of Central Florida","University of California, Riverside","University at Buffalo (SUNY)",
+                    "Stony Brook University (SUNY)","Baylor University","Southern Methodist University",
+                    "Texas Christian University","Florida State University","Clemson University","Colorado State University",
+                    "University of Illinois Chicago","Rutgers University-New Brunswick","Temple University",
+                    "University of Denver","George Washington University","Fordham University",
+                    "Pepperdine University","American University","Syracuse University","Lehigh University"
                 ];
+
+                // Comprehensive university data
+                this.universityData = {
+                    "Harvard University": {
+                        rank: 2,
+                        acceptanceRate: "3.4%",
+                        enrollment: "23,731",
+                        location: "Cambridge, MA",
+                        founded: "1636",
+                        strengths: "Medicine, Business, Law, Liberal Arts",
+                        website: "harvard.edu",
+                        type: "Private Ivy League"
+                    },
+                    "Stanford University": {
+                        rank: 3,
+                        acceptanceRate: "3.7%",
+                        enrollment: "17,249",
+                        location: "Stanford, CA",
+                        founded: "1885",
+                        strengths: "Engineering, Computer Science, Business",
+                        website: "stanford.edu",
+                        type: "Private Research"
+                    },
+                    "Massachusetts Institute of Technology": {
+                        rank: 2,
+                        acceptanceRate: "4.0%",
+                        enrollment: "11,934",
+                        location: "Cambridge, MA",
+                        founded: "1861",
+                        strengths: "Engineering, Technology, Sciences",
+                        website: "mit.edu",
+                        type: "Private Research"
+                    },
+                    "Yale University": {
+                        rank: 5,
+                        acceptanceRate: "4.6%",
+                        enrollment: "13,433",
+                        location: "New Haven, CT",
+                        founded: "1701",
+                        strengths: "Liberal Arts, Law, Medicine, Drama",
+                        website: "yale.edu",
+                        type: "Private Ivy League"
+                    },
+                    "Princeton University": {
+                        rank: 1,
+                        acceptanceRate: "4.0%",
+                        enrollment: "5,422",
+                        location: "Princeton, NJ",
+                        founded: "1746",
+                        strengths: "Liberal Arts, Economics, Engineering",
+                        website: "princeton.edu",
+                        type: "Private Ivy League"
+                    },
+                    "Columbia University": {
+                        rank: 18,
+                        acceptanceRate: "3.9%",
+                        enrollment: "33,413",
+                        location: "New York, NY",
+                        founded: "1754",
+                        strengths: "Journalism, Business, Medicine, Law",
+                        website: "columbia.edu",
+                        type: "Private Ivy League"
+                    },
+                    "University of Chicago": {
+                        rank: 6,
+                        acceptanceRate: "5.4%",
+                        enrollment: "17,834",
+                        location: "Chicago, IL",
+                        founded: "1890",
+                        strengths: "Economics, Business, Liberal Arts",
+                        website: "uchicago.edu",
+                        type: "Private Research"
+                    },
+                    "University of Pennsylvania": {
+                        rank: 6,
+                        acceptanceRate: "6.0%",
+                        enrollment: "26,552",
+                        location: "Philadelphia, PA",
+                        founded: "1740",
+                        strengths: "Business (Wharton), Medicine, Engineering",
+                        website: "upenn.edu",
+                        type: "Private Ivy League"
+                    },
+                    "California Institute of Technology": {
+                        rank: 7,
+                        acceptanceRate: "3.9%",
+                        enrollment: "2,397",
+                        location: "Pasadena, CA",
+                        founded: "1891",
+                        strengths: "Engineering, Physics, Chemistry",
+                        website: "caltech.edu",
+                        type: "Private Research"
+                    },
+                    "Duke University": {
+                        rank: 7,
+                        acceptanceRate: "6.2%",
+                        enrollment: "17,148",
+                        location: "Durham, NC",
+                        founded: "1838",
+                        strengths: "Medicine, Business, Engineering, Law",
+                        website: "duke.edu",
+                        type: "Private Research"
+                    },
+                    "Johns Hopkins University": {
+                        rank: 9,
+                        acceptanceRate: "7.5%",
+                        enrollment: "28,890",
+                        location: "Baltimore, MD",
+                        founded: "1876",
+                        strengths: "Medicine, Public Health, Engineering",
+                        website: "jhu.edu",
+                        type: "Private Research"
+                    },
+                    "Northwestern University": {
+                        rank: 9,
+                        acceptanceRate: "7.0%",
+                        enrollment: "22,603",
+                        location: "Evanston, IL",
+                        founded: "1851",
+                        strengths: "Journalism, Business, Medicine, Engineering",
+                        website: "northwestern.edu",
+                        type: "Private Research"
+                    },
+                    "Dartmouth College": {
+                        rank: 12,
+                        acceptanceRate: "6.2%",
+                        enrollment: "6,761",
+                        location: "Hanover, NH",
+                        founded: "1769",
+                        strengths: "Liberal Arts, Business, Medicine",
+                        website: "dartmouth.edu",
+                        type: "Private Ivy League"
+                    },
+                    "Brown University": {
+                        rank: 13,
+                        acceptanceRate: "5.1%",
+                        enrollment: "10,696",
+                        location: "Providence, RI",
+                        founded: "1764",
+                        strengths: "Liberal Arts, Medicine, Engineering",
+                        website: "brown.edu",
+                        type: "Private Ivy League"
+                    },
+                    "Cornell University": {
+                        rank: 15,
+                        acceptanceRate: "8.7%",
+                        enrollment: "25,593",
+                        location: "Ithaca, NY",
+                        founded: "1865",
+                        strengths: "Engineering, Agriculture, Business, Veterinary",
+                        website: "cornell.edu",
+                        type: "Private Ivy League"
+                    },
+                    "University of Notre Dame": {
+                        rank: 20,
+                        acceptanceRate: "13.0%",
+                        enrollment: "12,809",
+                        location: "Notre Dame, IN",
+                        founded: "1842",
+                        strengths: "Business, Engineering, Liberal Arts",
+                        website: "nd.edu",
+                        type: "Private Catholic"
+                    },
+                    "Vanderbilt University": {
+                        rank: 13,
+                        acceptanceRate: "6.7%",
+                        enrollment: "13,796",
+                        location: "Nashville, TN",
+                        founded: "1873",
+                        strengths: "Medicine, Education, Engineering, Music",
+                        website: "vanderbilt.edu",
+                        type: "Private Research"
+                    },
+                    "Rice University": {
+                        rank: 17,
+                        acceptanceRate: "8.7%",
+                        enrollment: "8,000",
+                        location: "Houston, TX",
+                        founded: "1912",
+                        strengths: "Engineering, Business, Natural Sciences",
+                        website: "rice.edu",
+                        type: "Private Research"
+                    },
+                    "Washington University in St. Louis": {
+                        rank: 24,
+                        acceptanceRate: "11.0%",
+                        enrollment: "16,550",
+                        location: "St. Louis, MO",
+                        founded: "1853",
+                        strengths: "Medicine, Business, Engineering",
+                        website: "wustl.edu",
+                        type: "Private Research"
+                    },
+                    "Georgetown University": {
+                        rank: 22,
+                        acceptanceRate: "12.2%",
+                        enrollment: "20,935",
+                        location: "Washington, DC",
+                        founded: "1789",
+                        strengths: "International Relations, Business, Law",
+                        website: "georgetown.edu",
+                        type: "Private Catholic"
+                    },
+                    "University of California, Berkeley": {
+                        rank: 15,
+                        acceptanceRate: "11.4%",
+                        enrollment: "45,057",
+                        location: "Berkeley, CA",
+                        founded: "1868",
+                        strengths: "Engineering, Business, Computer Science",
+                        website: "berkeley.edu",
+                        type: "Public Research"
+                    },
+                    "University of California, Los Angeles": {
+                        rank: 15,
+                        acceptanceRate: "9.0%",
+                        enrollment: "47,518",
+                        location: "Los Angeles, CA",
+                        founded: "1919",
+                        strengths: "Film, Medicine, Engineering, Business",
+                        website: "ucla.edu",
+                        type: "Public Research"
+                    },
+                    "University of Michigan, Ann Arbor": {
+                        rank: 21,
+                        acceptanceRate: "17.7%",
+                        enrollment: "51,225",
+                        location: "Ann Arbor, MI",
+                        founded: "1817",
+                        strengths: "Engineering, Business, Medicine, Law",
+                        website: "umich.edu",
+                        type: "Public Research"
+                    },
+                    "University of Southern California": {
+                        rank: 28,
+                        acceptanceRate: "9.9%",
+                        enrollment: "49,318",
+                        location: "Los Angeles, CA",
+                        founded: "1880",
+                        strengths: "Film, Business, Engineering, Medicine",
+                        website: "usc.edu",
+                        type: "Private Research"
+                    },
+                    "Carnegie Mellon University": {
+                        rank: 24,
+                        acceptanceRate: "11.3%",
+                        enrollment: "15,818",
+                        location: "Pittsburgh, PA",
+                        founded: "1900",
+                        strengths: "Computer Science, Engineering, Business",
+                        website: "cmu.edu",
+                        type: "Private Research"
+                    },
+                    "Emory University": {
+                        rank: 24,
+                        acceptanceRate: "11.2%",
+                        enrollment: "14,513",
+                        location: "Atlanta, GA",
+                        founded: "1836",
+                        strengths: "Medicine, Business, Liberal Arts",
+                        website: "emory.edu",
+                        type: "Private Research"
+                    },
+                    "New York University": {
+                        rank: 35,
+                        acceptanceRate: "12.8%",
+                        enrollment: "59,144",
+                        location: "New York, NY",
+                        founded: "1831",
+                        strengths: "Business, Film, Liberal Arts, Medicine",
+                        website: "nyu.edu",
+                        type: "Private Research"
+                    },
+                    "University of Virginia": {
+                        rank: 24,
+                        acceptanceRate: "21.0%",
+                        enrollment: "25,628",
+                        location: "Charlottesville, VA",
+                        founded: "1819",
+                        strengths: "Business, Law, Liberal Arts, Medicine",
+                        website: "virginia.edu",
+                        type: "Public Research"
+                    },
+                    "University of North Carolina at Chapel Hill": {
+                        rank: 29,
+                        acceptanceRate: "16.8%",
+                        enrollment: "31,705",
+                        location: "Chapel Hill, NC",
+                        founded: "1789",
+                        strengths: "Medicine, Business, Journalism, Public Health",
+                        website: "unc.edu",
+                        type: "Public Research"
+                    },
+                    "Wake Forest University": {
+                        rank: 29,
+                        acceptanceRate: "22.0%",
+                        enrollment: "5,471",
+                        location: "Winston-Salem, NC",
+                        founded: "1834",
+                        strengths: "Business, Medicine, Liberal Arts",
+                        website: "wfu.edu",
+                        type: "Private Research"
+                    },
+                    "Boston College": {
+                        rank: 39,
+                        acceptanceRate: "16.7%",
+                        enrollment: "15,287",
+                        location: "Chestnut Hill, MA",
+                        founded: "1863",
+                        strengths: "Business, Liberal Arts, Education",
+                        website: "bc.edu",
+                        type: "Private Catholic"
+                    },
+                    "Tufts University": {
+                        rank: 40,
+                        acceptanceRate: "9.7%",
+                        enrollment: "12,645",
+                        location: "Medford, MA",
+                        founded: "1852",
+                        strengths: "International Relations, Medicine, Engineering",
+                        website: "tufts.edu",
+                        type: "Private Research"
+                    },
+                    "University of Rochester": {
+                        rank: 47,
+                        acceptanceRate: "39.0%",
+                        enrollment: "12,254",
+                        location: "Rochester, NY",
+                        founded: "1850",
+                        strengths: "Medicine, Engineering, Business, Music",
+                        website: "rochester.edu",
+                        type: "Private Research"
+                    },
+                    "University of California, San Diego": {
+                        rank: 28,
+                        acceptanceRate: "23.8%",
+                        enrollment: "42,006",
+                        location: "La Jolla, CA",
+                        founded: "1960",
+                        strengths: "Engineering, Medicine, Sciences",
+                        website: "ucsd.edu",
+                        type: "Public Research"
+                    },
+                    "University of California, Santa Barbara": {
+                        rank: 32,
+                        acceptanceRate: "25.9%",
+                        enrollment: "26,314",
+                        location: "Santa Barbara, CA",
+                        founded: "1909",
+                        strengths: "Engineering, Liberal Arts, Sciences",
+                        website: "ucsb.edu",
+                        type: "Public Research"
+                    },
+                    "University of California, Irvine": {
+                        rank: 33,
+                        acceptanceRate: "21.3%",
+                        enrollment: "36,032",
+                        location: "Irvine, CA",
+                        founded: "1965",
+                        strengths: "Medicine, Engineering, Business",
+                        website: "uci.edu",
+                        type: "Public Research"
+                    },
+                    "University of Florida": {
+                        rank: 28,
+                        acceptanceRate: "23.0%",
+                        enrollment: "56,567",
+                        location: "Gainesville, FL",
+                        founded: "1853",
+                        strengths: "Business, Engineering, Medicine, Journalism",
+                        website: "ufl.edu",
+                        type: "Public Research"
+                    },
+                    "University of Wisconsin-Madison": {
+                        rank: 38,
+                        acceptanceRate: "49.0%",
+                        enrollment: "48,956",
+                        location: "Madison, WI",
+                        founded: "1848",
+                        strengths: "Engineering, Business, Medicine, Agriculture",
+                        website: "wisc.edu",
+                        type: "Public Research"
+                    },
+                    "University of Illinois Urbana-Champaign": {
+                        rank: 35,
+                        acceptanceRate: "44.8%",
+                        enrollment: "52,679",
+                        location: "Urbana-Champaign, IL",
+                        founded: "1867",
+                        strengths: "Engineering, Computer Science, Business",
+                        website: "illinois.edu",
+                        type: "Public Research"
+                    },
+                    "Pennsylvania State University": {
+                        rank: 60,
+                        acceptanceRate: "46.0%",
+                        enrollment: "99,390",
+                        location: "University Park, PA",
+                        founded: "1855",
+                        strengths: "Engineering, Business, Agriculture",
+                        website: "psu.edu",
+                        type: "Public Research"
+                    },
+                    "University of Texas at Austin": {
+                        rank: 32,
+                        acceptanceRate: "28.0%",
+                        enrollment: "52,384",
+                        location: "Austin, TX",
+                        founded: "1883",
+                        strengths: "Engineering, Business, Liberal Arts",
+                        website: "utexas.edu",
+                        type: "Public Research"
+                    },
+                    "Ohio State University": {
+                        rank: 43,
+                        acceptanceRate: "52.0%",
+                        enrollment: "66,046",
+                        location: "Columbus, OH",
+                        founded: "1870",
+                        strengths: "Engineering, Business, Medicine",
+                        website: "osu.edu",
+                        type: "Public Research"
+                    },
+                    "University of Miami": {
+                        rank: 67,
+                        acceptanceRate: "19.0%",
+                        enrollment: "16,774",
+                        location: "Miami, FL",
+                        founded: "1925",
+                        strengths: "Business, Medicine, Marine Sciences",
+                        website: "miami.edu",
+                        type: "Private Research"
+                    },
+                    "University of Washington": {
+                        rank: 40,
+                        acceptanceRate: "48.0%",
+                        enrollment: "54,059",
+                        location: "Seattle, WA",
+                        founded: "1861",
+                        strengths: "Medicine, Engineering, Computer Science",
+                        website: "uw.edu",
+                        type: "Public Research"
+                    },
+                    "Purdue University": {
+                        rank: 43,
+                        acceptanceRate: "50.0%",
+                        enrollment: "50,884",
+                        location: "West Lafayette, IN",
+                        founded: "1869",
+                        strengths: "Engineering, Agriculture, Technology",
+                        website: "purdue.edu",
+                        type: "Public Research"
+                    },
+                    "Boston University": {
+                        rank: 43,
+                        acceptanceRate: "10.7%",
+                        enrollment: "37,217",
+                        location: "Boston, MA",
+                        founded: "1839",
+                        strengths: "Medicine, Business, Communications",
+                        website: "bu.edu",
+                        type: "Private Research"
+                    },
+                    "University of Maryland, College Park": {
+                        rank: 46,
+                        acceptanceRate: "44.0%",
+                        enrollment: "40,521",
+                        location: "College Park, MD",
+                        founded: "1856",
+                        strengths: "Engineering, Business, Computer Science",
+                        website: "umd.edu",
+                        type: "Public Research"
+                    },
+                    "University of Minnesota Twin Cities": {
+                        rank: 62,
+                        acceptanceRate: "75.0%",
+                        enrollment: "52,557",
+                        location: "Minneapolis, MN",
+                        founded: "1851",
+                        strengths: "Engineering, Medicine, Liberal Arts",
+                        website: "umn.edu",
+                        type: "Public Research"
+                    },
+                    "Michigan State University": {
+                        rank: 60,
+                        acceptanceRate: "76.0%",
+                        enrollment: "50,023",
+                        location: "East Lansing, MI",
+                        founded: "1855",
+                        strengths: "Agriculture, Engineering, Education",
+                        website: "msu.edu",
+                        type: "Public Research"
+                    },
+                    "Texas A&M University": {
+                        rank: 47,
+                        acceptanceRate: "58.0%",
+                        enrollment: "73,284",
+                        location: "College Station, TX",
+                        founded: "1876",
+                        strengths: "Engineering, Agriculture, Veterinary",
+                        website: "tamu.edu",
+                        type: "Public Research"
+                    },
+                    "University of Pittsburgh": {
+                        rank: 67,
+                        acceptanceRate: "49.0%",
+                        enrollment: "33,767",
+                        location: "Pittsburgh, PA",
+                        founded: "1787",
+                        strengths: "Medicine, Engineering, Liberal Arts",
+                        website: "pitt.edu",
+                        type: "Public Research"
+                    },
+                    "Case Western Reserve University": {
+                        rank: 53,
+                        acceptanceRate: "27.0%",
+                        enrollment: "12,201",
+                        location: "Cleveland, OH",
+                        founded: "1826",
+                        strengths: "Medicine, Engineering, Liberal Arts",
+                        website: "case.edu",
+                        type: "Private Research"
+                    },
+                    "University of Georgia": {
+                        rank: 47,
+                        acceptanceRate: "42.5%",
+                        enrollment: "40,118",
+                        location: "Athens, GA",
+                        founded: "1785",
+                        strengths: "Business, Journalism, Agriculture",
+                        website: "uga.edu",
+                        type: "Public Research"
+                    },
+                    "Indiana University Bloomington": {
+                        rank: 72,
+                        acceptanceRate: "82.0%",
+                        enrollment: "47,005",
+                        location: "Bloomington, IN",
+                        founded: "1820",
+                        strengths: "Business, Music, Liberal Arts",
+                        website: "indiana.edu",
+                        type: "Public Research"
+                    },
+                    "Northeastern University": {
+                        rank: 53,
+                        acceptanceRate: "6.7%",
+                        enrollment: "27,000",
+                        location: "Boston, MA",
+                        founded: "1898",
+                        strengths: "Engineering, Business, Co-op Programs",
+                        website: "northeastern.edu",
+                        type: "Private Research"
+                    },
+                    "University of Connecticut": {
+                        rank: 67,
+                        acceptanceRate: "56.0%",
+                        enrollment: "32,257",
+                        location: "Storrs, CT",
+                        founded: "1881",
+                        strengths: "Business, Engineering, Liberal Arts",
+                        website: "uconn.edu",
+                        type: "Public Research"
+                    },
+                    "University of Delaware": {
+                        rank: 76,
+                        acceptanceRate: "66.0%",
+                        enrollment: "24,039",
+                        location: "Newark, DE",
+                        founded: "1743",
+                        strengths: "Engineering, Business, Liberal Arts",
+                        website: "udel.edu",
+                        type: "Public Research"
+                    },
+                    "University of California, Davis": {
+                        rank: 28,
+                        acceptanceRate: "37.0%",
+                        enrollment: "39,074",
+                        location: "Davis, CA",
+                        founded: "1905",
+                        strengths: "Agriculture, Veterinary, Engineering",
+                        website: "ucdavis.edu",
+                        type: "Public Research"
+                    },
+                    "University of Colorado Boulder": {
+                        rank: 99,
+                        acceptanceRate: "84.0%",
+                        enrollment: "37,218",
+                        location: "Boulder, CO",
+                        founded: "1876",
+                        strengths: "Engineering, Liberal Arts, Sciences",
+                        website: "colorado.edu",
+                        type: "Public Research"
+                    },
+                    "University of Iowa": {
+                        rank: 99,
+                        acceptanceRate: "86.0%",
+                        enrollment: "30,015",
+                        location: "Iowa City, IA",
+                        founded: "1847",
+                        strengths: "Medicine, Liberal Arts, Writing",
+                        website: "uiowa.edu",
+                        type: "Public Research"
+                    },
+                    "University of Arizona": {
+                        rank: 105,
+                        acceptanceRate: "87.0%",
+                        enrollment: "49,471",
+                        location: "Tucson, AZ",
+                        founded: "1885",
+                        strengths: "Engineering, Liberal Arts, Sciences",
+                        website: "arizona.edu",
+                        type: "Public Research"
+                    }
+                };
                 
                 this.selectedRounds = 0;
                 this.currentTournament = [];
                 this.currentRound = 1;
                 this.currentMatch = 0;
                 this.winners = [];
-                this.careerPath = [];
+                this.universityPath = [];
                 
                 this.initializeEvents();
             }
@@ -518,27 +1308,8 @@
                     this.startTournament();
                 });
 
-                // Career selection
-                document.getElementById('career1').addEventListener('click', (e) => {
-                    e.preventDefault();
-                    this.selectCareer(0);
-                });
-
-                document.getElementById('career2').addEventListener('click', (e) => {
-                    e.preventDefault();
-                    this.selectCareer(1);
-                });
-
-                // Also add touch events for better mobile support
-                document.getElementById('career1').addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    this.selectCareer(0);
-                });
-
-                document.getElementById('career2').addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    this.selectCareer(1);
-                });
+                // University selection with tooltip
+                this.setupUniversityCards();
 
                 // Action buttons
                 document.getElementById('saveResults').addEventListener('click', () => {
@@ -552,11 +1323,11 @@
                 // Update data modal
                 document.getElementById('updateData').addEventListener('click', () => {
                     document.getElementById('updateModal').style.display = 'block';
-                    document.getElementById('careerInput').value = this.careers.join('\n');
+                    document.getElementById('careerInput').value = this.universities.join('\n');
                 });
 
                 document.getElementById('confirmUpdate').addEventListener('click', () => {
-                    this.updateCareerData();
+                    this.updateUniversityData();
                 });
 
                 document.getElementById('cancelUpdate').addEventListener('click', () => {
@@ -564,9 +1335,121 @@
                 });
             }
 
+            setupUniversityCards() {
+                const career1 = document.getElementById('career1');
+                const career2 = document.getElementById('career2');
+                const infoBtn1 = document.getElementById('infoBtn1');
+                const infoBtn2 = document.getElementById('infoBtn2');
+                const infoDisplay = document.getElementById('universityInfoDisplay');
+
+                // Add click events for info buttons
+                infoBtn1.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const universityName = career1.querySelector('.career-name').textContent;
+                    this.showUniversityInfo(universityName, infoDisplay);
+                    
+                    // Update button states
+                    infoBtn1.classList.add('active');
+                    infoBtn2.classList.remove('active');
+                });
+
+                infoBtn2.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const universityName = career2.querySelector('.career-name').textContent;
+                    this.showUniversityInfo(universityName, infoDisplay);
+                    
+                    // Update button states
+                    infoBtn2.classList.add('active');
+                    infoBtn1.classList.remove('active');
+                });
+
+                // Click events for university selection
+                career1.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('info-btn')) {
+                        this.selectUniversity(0);
+                    }
+                });
+
+                career2.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('info-btn')) {
+                        this.selectUniversity(1);
+                    }
+                });
+
+                // Touch events for mobile
+                career1.addEventListener('touchend', (e) => {
+                    if (!e.target.classList.contains('info-btn')) {
+                        e.preventDefault();
+                        this.selectUniversity(0);
+                    }
+                });
+
+                career2.addEventListener('touchend', (e) => {
+                    if (!e.target.classList.contains('info-btn')) {
+                        e.preventDefault();
+                        this.selectUniversity(1);
+                    }
+                });
+            }
+
+            showUniversityInfo(universityName, displayElement) {
+                const data = this.universityData[universityName];
+                
+                if (!data) {
+                    displayElement.innerHTML = `
+                        <div class="university-info-content">
+                            <h4>${universityName}</h4>
+                            <p style="color: #6c757d; font-style: italic;">University information not available in database.</p>
+                        </div>
+                    `;
+                } else {
+                    displayElement.innerHTML = `
+                        <div class="university-info-content">
+                            <h4>${universityName}</h4>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">US News Rank</span>
+                                    <span class="info-value">#${data.rank}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Acceptance Rate</span>
+                                    <span class="info-value">${data.acceptanceRate}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Enrollment</span>
+                                    <span class="info-value">${data.enrollment}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Founded</span>
+                                    <span class="info-value">${data.founded}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Location</span>
+                                    <span class="info-value">${data.location}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Type</span>
+                                    <span class="info-value">${data.type}</span>
+                                </div>
+                                <div class="strengths">
+                                    <span class="info-label">Academic Strengths</span>
+                                    <span class="info-value">${data.strengths}</span>
+                                </div>
+                                <div class="info-item" style="grid-column: 1 / -1; margin-top: 8px; padding-top: 8px; border-top: 1px solid #dee2e6;">
+                                    <span class="info-label">Website</span>
+                                    <span class="info-value"><a href="https://${data.website}" target="_blank" rel="noopener noreferrer" class="website-link">${data.website} 🔗</a></span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                displayElement.classList.add('has-content');
+            }
+
             startTournament() {
-                // Shuffle and select random careers
-                const shuffled = [...this.careers].sort(() => Math.random() - 0.5);
+                // Shuffle and select random universities
+                const shuffled = [...this.universities].sort(() => Math.random() - 0.5);
                 this.currentTournament = shuffled.slice(0, this.selectedRounds);
                 
                 this.currentRound = 1;
@@ -595,20 +1478,28 @@
                 
                 document.getElementById('careerName1').textContent = competitors[index];
                 document.getElementById('careerName2').textContent = competitors[index + 1];
+                
+                // Reset info display and buttons
+                const infoDisplay = document.getElementById('universityInfoDisplay');
+                infoDisplay.classList.remove('has-content');
+                infoDisplay.innerHTML = 'Click the "ℹ️ Info" button on any university to see detailed information';
+                
+                document.getElementById('infoBtn1').classList.remove('active');
+                document.getElementById('infoBtn2').classList.remove('active');
             }
 
-            selectCareer(choice) {
+            selectUniversity(choice) {
                 const competitors = this.currentRound === 1 ? this.currentTournament : this.winners;
                 const index = this.currentMatch * 2;
-                const selectedCareer = competitors[index + choice];
+                const selectedUniversity = competitors[index + choice];
                 
-                console.log(`Round ${this.currentRound}, Match ${this.currentMatch + 1}: Selected ${selectedCareer}`);
+                console.log(`Round ${this.currentRound}, Match ${this.currentMatch + 1}: Selected ${selectedUniversity}`);
                 
                 // Add winner to current round winners array
                 if (!this.currentRoundWinners) {
                     this.currentRoundWinners = [];
                 }
-                this.currentRoundWinners.push(selectedCareer);
+                this.currentRoundWinners.push(selectedUniversity);
                 
                 this.currentMatch++;
                 
@@ -634,7 +1525,7 @@
                     
                     if (this.currentRoundWinners.length === 1) {
                         // Tournament finished
-                        this.showResults(selectedCareer);
+                        this.showResults(selectedUniversity);
                         return;
                     } else {
                         // Next round
@@ -645,6 +1536,13 @@
                         console.log(`Starting round ${this.currentRound} with ${this.winners.length} competitors`);
                     }
                 }
+                
+                // Clear info display when selecting
+                const infoDisplay = document.getElementById('universityInfoDisplay');
+                infoDisplay.classList.remove('has-content');
+                infoDisplay.innerHTML = 'Click the "ℹ️ Info" button on any university to see detailed information';
+                document.getElementById('infoBtn1').classList.remove('active');
+                document.getElementById('infoBtn2').classList.remove('active');
                 
                 setTimeout(() => {
                     this.showNextMatch();
@@ -657,9 +1555,10 @@
                 document.getElementById('resultsScreen').classList.add('fade-in');
                 
                 document.getElementById('winnerAnnouncement').textContent = 
-                    `🎉 Your ideal career is: ${winner}! 🎉`;
+                    `🎉 Your ideal university is: ${winner}! 🎉`;
                 
                 const pathContainer = document.getElementById('careerPath');
+                const resultsInfoDisplay = document.getElementById('resultsInfoDisplay');
                 pathContainer.innerHTML = '';
                 
                 // Show results by round (reverse order to show from final to first)
@@ -675,11 +1574,30 @@
                     roundHeader.textContent = `${round.round}:`;
                     pathContainer.appendChild(roundHeader);
                     
-                    round.winners.forEach((career, careerIndex) => {
+                    round.winners.forEach((university, universityIndex) => {
                         const item = document.createElement('div');
                         item.className = 'career-item';
-                        item.textContent = career;
-                        if (index === 0 && careerIndex === 0) {
+                        
+                        const universityName = document.createElement('span');
+                        universityName.className = 'university-name';
+                        universityName.textContent = university;
+                        
+                        const infoBtn = document.createElement('button');
+                        infoBtn.className = 'info-btn';
+                        infoBtn.innerHTML = 'ℹ️ Info';
+                        infoBtn.addEventListener('click', () => {
+                            this.showUniversityInfoInResults(university, resultsInfoDisplay);
+                            // Update button states
+                            document.querySelectorAll('.career-item .info-btn').forEach(btn => {
+                                btn.classList.remove('active');
+                            });
+                            infoBtn.classList.add('active');
+                        });
+                        
+                        item.appendChild(universityName);
+                        item.appendChild(infoBtn);
+                        
+                        if (index === 0 && universityIndex === 0) {
                             item.style.borderLeftColor = '#f39c12';
                             item.style.fontWeight = '700';
                         }
@@ -688,9 +1606,68 @@
                 });
             }
 
+            showUniversityInfoInResults(universityName, displayElement) {
+                const data = this.universityData[universityName];
+                
+                if (!data) {
+                    displayElement.innerHTML = `
+                        <div class="university-info-content">
+                            <h4>${universityName}</h4>
+                            <p style="color: #6c757d; font-style: italic;">University information not available in database.</p>
+                        </div>
+                    `;
+                } else {
+                    displayElement.innerHTML = `
+                        <div class="university-info-content">
+                            <h4>${universityName}</h4>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">US News Rank</span>
+                                    <span class="info-value">#${data.rank}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Acceptance Rate</span>
+                                    <span class="info-value">${data.acceptanceRate}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Enrollment</span>
+                                    <span class="info-value">${data.enrollment}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Founded</span>
+                                    <span class="info-value">${data.founded}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Location</span>
+                                    <span class="info-value">${data.location}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Type</span>
+                                    <span class="info-value">${data.type}</span>
+                                </div>
+                                <div class="strengths">
+                                    <span class="info-label">Academic Strengths</span>
+                                    <span class="info-value">${data.strengths}</span>
+                                </div>
+                                <div class="info-item" style="grid-column: 1 / -1; margin-top: 8px; padding-top: 8px; border-top: 1px solid #dee2e6;">
+                                    <span class="info-label">Website</span>
+                                    <span class="info-value"><a href="https://${data.website}" target="_blank" rel="noopener noreferrer" class="website-link">${data.website} 🔗</a></span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                displayElement.classList.add('has-content');
+            }
+
             saveResults() {
+                const winner = this.roundResults[this.roundResults.length - 1].winners[0];
+                const winnerData = this.universityData[winner];
+                
                 const results = {
-                    winner: this.roundResults[this.roundResults.length - 1].winners[0],
+                    winner: winner,
+                    winnerDetails: winnerData || null,
                     roundResults: this.roundResults,
                     timestamp: new Date().toISOString(),
                     tournamentSize: this.selectedRounds
@@ -700,7 +1677,7 @@
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `career-tournament-${new Date().toISOString().split('T')[0]}.json`;
+                a.download = `university-tournament-${new Date().toISOString().split('T')[0]}.json`;
                 a.click();
                 URL.revokeObjectURL(url);
                 
@@ -715,17 +1692,31 @@
                 document.querySelectorAll('.round-btn').forEach(btn => btn.classList.remove('selected'));
                 document.getElementById('startTournament').disabled = true;
                 this.selectedRounds = 0;
+                
+                // Reset info display
+                const infoDisplay = document.getElementById('universityInfoDisplay');
+                if (infoDisplay) {
+                    infoDisplay.classList.remove('has-content');
+                    infoDisplay.innerHTML = 'Click the "ℹ️ Info" button on any university to see detailed information';
+                }
+                
+                // Reset results info display
+                const resultsInfoDisplay = document.getElementById('resultsInfoDisplay');
+                if (resultsInfoDisplay) {
+                    resultsInfoDisplay.classList.remove('has-content');
+                    resultsInfoDisplay.innerHTML = 'Click any "ℹ️ Info" button below to see university details';
+                }
             }
 
-            updateCareerData() {
-                const newCareers = document.getElementById('careerInput').value
+            updateUniversityData() {
+                const newUniversities = document.getElementById('careerInput').value
                     .split('\n')
-                    .map(career => career.trim())
-                    .filter(career => career.length > 0);
+                    .map(university => university.trim())
+                    .filter(university => university.length > 0);
                 
-                if (newCareers.length > 0) {
-                    this.careers = [...new Set(newCareers)]; // Remove duplicates
-                    alert(`Career database updated with ${this.careers.length} careers! 🎯`);
+                if (newUniversities.length > 0) {
+                    this.universities = [...new Set(newUniversities)]; // Remove duplicates
+                    alert(`University database updated with ${this.universities.length} universities! 🎯`);
                 }
                 
                 document.getElementById('updateModal').style.display = 'none';
@@ -734,7 +1725,7 @@
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', () => {
-            new CareerTournament();
+            new UniversityTournament();
         });
     </script>
 </body>
